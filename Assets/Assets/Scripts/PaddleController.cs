@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class PaddleController : MonoBehaviour
 {
+    private Rigidbody2D rigidbody2D;
+    private SpriteRenderer spriteRenderer;
+
     public KeyCode moveUp = KeyCode.W;
     public KeyCode moveDown = KeyCode.S;
+
     public float speed = 10.0f;
     public float boundY = 2.25f;
-    private Rigidbody2D rigidbody2D;
 
-    void Start()
+    [SerializeField]
+    private bool AIControlled;
+
+    void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -30,7 +37,15 @@ public class PaddleController : MonoBehaviour
         {
             velocity.y = 0;
         }
-        rigidbody2D.velocity = velocity;
+
+        if (AIControlled)
+        {
+            rigidbody2D.velocity = new Vector2(0, (BallController.Instance.transform.position.y - transform.position.y) * speed);
+        }
+        else
+        {
+            rigidbody2D.velocity = velocity;
+        }
 
         var position = transform.position;
         if (position.y > boundY)
@@ -42,5 +57,13 @@ public class PaddleController : MonoBehaviour
             position.y = -boundY;
         }
         transform.position = position;
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ball")
+        {
+            spriteRenderer.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0, 1f), 1);
+        }
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager Instance { get; private set; }
 
     private BallController ball;
@@ -43,6 +42,7 @@ public class GameManager : MonoBehaviour
             player2Score++;
         }
 
+        AudioManager.Instance.PlayClip("Sounds/beep/beep_1");
         UIManager.Instance.SetScore(player1Score, player2Score);
 
         CreateBall();
