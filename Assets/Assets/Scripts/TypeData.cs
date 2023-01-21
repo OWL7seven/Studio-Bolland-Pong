@@ -11,4 +11,11 @@ public class TypeData
         Top,
         Bottom
     }
+
+    public enum Player
+    {
+        One,
+        Two,
+        AI
+    }
 }
